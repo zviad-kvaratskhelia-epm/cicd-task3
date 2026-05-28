@@ -47,10 +47,10 @@ pipeline {
             steps {
                 script {
                     if(BRANCH_NAME == "main") {
-                        build job: "Deploy_to_main"
+                        build job: "Deploy_to_main", wait: false
                     }
                     else {
-                        build job: "Deploy_to_dev"
+                        build job: "Deploy_to_dev", wait: false
                     }
                 }
             }
