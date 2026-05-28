@@ -43,22 +43,14 @@ pipeline {
         }
     }
 }
-        stage('Deploy') {
+        stage('Trigger Deploy') {
             steps {
                 script {
                     if(BRANCH_NAME == "main") {
-                        sh '''
-                            docker stop nodemain || true
-                            docker rm nodemain || true
-                            docker run -d --name nodemain -p 3000:3000 nodemain:v1.0
-                           '''
+                        build job: "Deploy_to_main"
                     }
                     else {
-                        sh '''
-                            docker stop nodedev || true
-                            docker rm nodedev || true
-                            docker run -d --name nodedev -p 3001:3000 nodedev:v1.0
-                           '''
+                        build job: "Deploy_to_dev"
                     }
                 }
             }
