@@ -25,6 +25,15 @@ pipeline {
             }
         }
     }
+        stage('Scan Docker Image for Vulnerabilities') {
+            steps {
+                script {
+            def imageName = BRANCH_NAME == "main" ? "d3f4ault/nodemain:v1.0" : "d3f4ault/nodedev:v1.0"
+            def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress ${imageName}", returnStdout: true).trim()
+            echo "Vulnerability Report:\n${vulnerabilities}"
+            }
+        }
+    }
         stage("Push") {
             steps {
                 script {
