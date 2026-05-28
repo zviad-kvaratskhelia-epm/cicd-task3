@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Deploy to main") {
+        steps {
+        script {
+            def containerName = "nodemain"
+            def imageName = "d3f4ault/nodemain:v1.0"
+            def port = "3000"
+            withCredentials([usernamePassword(
+                    credentialsId: 'c56850e3-4517-420b-b6e1-1f7d78eee9ba',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+            sh "docker stop ${containerName} || true"
+            sh "docker rm ${containerName} || true"
+            sh "docker login -u ${USER} -p ${PASS}"
+            sh "docker pull ${imageName}"
+            sh "docker run -d --name ${containerName} -p ${port}:3000 ${imageName}"
+                    }
+                }
+            }
+        }
+    }
+}

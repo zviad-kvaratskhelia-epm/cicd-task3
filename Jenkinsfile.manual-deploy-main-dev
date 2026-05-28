@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Deploy MAIN/DEV application") {
+        steps {
+        script {
+            def containerName = "node${params.ENVIRONMENT}"
+            def imageName = params.ENVIRONMENT == "main" ? "nodemain:${params.IMAGE_TAG}" : "nodedev:${params.IMAGE_TAG}"
+            def port = params.ENVIRONMENT == "main" ? "3000" : "3001"
+            withCredentials([usernamePassword(
+                    credentialsId: 'c56850e3-4517-420b-b6e1-1f7d78eee9ba',
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
+                )]) {
+            sh "docker stop ${containerName} || true"
+            sh "docker rm ${containerName} || true"
+            sh "docker run -d --name ${containerName} -p ${port}:3000 ${imageName}" }
+                }
+            }
+        }
+    }
+}
