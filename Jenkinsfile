@@ -39,7 +39,7 @@ pipeline {
                         sh '''
                             docker stop nodedev || true
                             docker rm nodedev || true
-                            docker run -d --name nodedev -p 3001:3000 nodedev:v1.0
+                             docker run -d --name nodemain -p 3001:3000 nodemain:v1.0
                            '''
                     }
                 }
