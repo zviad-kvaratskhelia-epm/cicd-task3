@@ -20,11 +20,21 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                def imageName = BRANCH_NAME == "main" ? "nodemain:v1.0" : "nodedev:v1.0"
+                def imageName = BRANCH_NAME == "main" ? "d3f4ault/nodemain:v1.0" : "d3f4ault/nodedev:v1.0"
                 sh "docker build -t ${imageName} ."
             }
         }
     }
+        stage("Push") {
+            steps {
+                script {
+                def imageName = BRANCH_NAME == "main" ? "d3f4ault/nodemain:v1.0" : "d3f4ault/nodedev:v1.0"
+                docker.withRegistry("https://registry.hub.docker.com", "c56850e3-4517-420b-b6e1-1f7d78eee9ba") {
+                sh "docker push ${imageName}"
+            }
+        }
+    }
+}
         stage('Deploy') {
             steps {
                 script {
@@ -39,7 +49,7 @@ pipeline {
                         sh '''
                             docker stop nodedev || true
                             docker rm nodedev || true
-                             docker run -d --name nodemain -p 3001:3000 nodemain:v1.0
+                            docker run -d --name nodedev -p 3001:3000 nodedev:v1.0
                            '''
                     }
                 }
