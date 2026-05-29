@@ -13,7 +13,7 @@
         }
         stage ('Install Docker') {
             steps {
-                sh 'apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'
+                sh 'apt-get update && apt-get install -y docker.io'
             }
         }
         stage('Build') {
