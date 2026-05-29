@@ -17,6 +17,11 @@ pipeline {
                 sh "npm test"
             }
         }
+        stage('Lint docker file') {
+            steps {
+                sh "hadolint Dockerfile"
+            }
+        }
         stage("Build Docker Image") {
             steps {
                 script {
