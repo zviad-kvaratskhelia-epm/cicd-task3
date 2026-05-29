@@ -1,7 +1,7 @@
 pipeline {
     docker {
-        image: "node:16"
-        args "-v /var/run/docker.sock:/var/run/docker.sock -u root"
+        image 'node:16'
+        args '-v /var/run/docker.sock:/var/run/docker.sock -u root'
     }
     stages {
         stage('Checkout') {
