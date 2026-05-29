@@ -22,8 +22,11 @@
             }
         }
         stage('Lint docker file') {
+            agent {
+                docker { image 'hadolint/hadolint'}
+            }
             steps {
-                sh "hadolint Dockerfile"
+                sh 'hadolint Dockerfile'
             }
         }
         stage("Build Docker Image") {
